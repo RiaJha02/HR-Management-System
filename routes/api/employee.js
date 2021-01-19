@@ -5,8 +5,8 @@ const { check, validationResult } = require('express-validator');
 
 const Employee = require('../../models/Employee');
 
-// @route    POST api/profile
-// @desc     Create or update user profile
+// @route    POST api/employee
+// @desc     Create or update employee profile
 // @access   Private
 
 router.post('/',
@@ -23,7 +23,7 @@ router.post('/',
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() });
         } 
         const {
             name,
@@ -36,8 +36,9 @@ router.post('/',
             salary
           } = req.body;
         
+        //callRegister(name, email, avatar);
+        
         const empFields = {};
-        empFields.id = id;
         if(name) empFields.name = name;
         if(email) empFields.email = email;
         if(avatar) empFields.avatar = avatar;
@@ -54,7 +55,7 @@ router.post('/',
             if(profile) {
                 //Update the existing user
                 profile = await Profile.findOneAndUpdate(
-                    { user : req.user.id },
+                    { user : req.user.id},
                     { $set : empFields },
                     { new : true }
                 );
@@ -64,6 +65,23 @@ router.post('/',
             //Create new profile
             profile = new Profile(empFields);
             await profile.save();
+            
+            //Register the Employee
+            const register = {
+                name : profile.name,
+                email : profile.name,
+                password : '123456',
+                avatar : profile.avatar
+            }
+        
+            fetch('http://localhost:5000/api/user',{
+                method : 'POST',
+                body: JSON.stringify(register),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => res.json())
+            .then(json => console.log(json));
+            
             res.json(profile);
 
         } catch(err) {
