@@ -262,22 +262,33 @@ router.put(
   }
 );
 
-//@route    PUT api/profile/leave/:emp_id/:leave_id
-//@desc     Mark the leave request as approved or rejected
-//@access   Private
+// @route    DELETE api/profile/leave/:emp_id/:leave_id/:val
+// @desc     Mark the leave request as approved or rejected and delete the request
+// @access   Private
 
-router.put('/leave/:emp_id/:leave_id/',auth,
+router.delete('/leave/:emp_id/:leave_id/:val',auth,
     async (req, res) => {
+        const ans = (req.params.val == 1) ? 'Your leave request is accepted' : 'Your leave request is rejected';
+        const leaveMsg = [];
         try {
-            const foundProfile = await Employee.findOneAndUpdate(
-                    { 
-                        user : req.params.user_id,
-                        leaves : { $elemMatch: { _id : req.params.leave_id } }
-                    },
-                    { $set : { "leaves.$.status" : leaves.$.status^1 } },
-                    { new : true }
+            const foundProfile = await Employee.findOne({ user: req.params.emp_id });
+            const leaveProfile = foundProfile.leaves.map((leave) => 
+                {
+                    if(leave._id == req.params.leave_id) 
+                    {
+                        leaveMsg.push(leave.from);
+                        leaveMsg.push(leave.to);
+                        leaveMsg.push(leave.reason);
+                        leave.status = req.params.val;
+                    }    
+                }
             );
-            return res.json(foundProfile);
+            foundProfile.leaves = foundProfile.leaves.filter(
+                (leave) => leave._id.toString() !== req.params.leave_id
+            );
+            await foundProfile.save();
+            leaveMsg.push(ans);
+            return res.status(200).send(leaveMsg);
         } catch (err) {
             console.log(err.message);
             res.status(500).send('Server Error');
