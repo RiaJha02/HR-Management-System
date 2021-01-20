@@ -96,9 +96,9 @@ router.post('/',
 
 // @route    GET api/profile
 // @desc     Get all profiles
-// @access   Public
+// @access   Private
 
-router.get('/', 
+router.get('/', auth,
     async (req, res) => {
         try {
             const profile = await Profile.find().populate('user',['name','avatar']);
@@ -112,9 +112,9 @@ router.get('/',
 
 // @route    GET api/profile/user/:user_id
 // @desc     Get profiles by user ID
-// @access   Public
+// @access   Private
 
-router.get('/user/:user_id', 
+router.get('/user/:user_id', auth,
     async (req, res) => {
         try {
             const profile = await Profile.findOne({
@@ -175,12 +175,10 @@ router.put( '/experience',
             return res.status(400).json({ errors : errors.array() });
         }
         try {
-
             const profile = await Profile.findOne({ user: req.user.id });
             profile.experience.unshift(req.body);
             await profile.save();
             res.json(profile);
-            
         } catch (err) {
             console.log(err.message);
             res.status(500).send('Server Error');
@@ -231,14 +229,10 @@ router.put(
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-    
         try {
             const profile = await Profile.findOne({ user: req.user.id });
-    
             profile.education.unshift(req.body);
-    
             await profile.save();
-    
             res.json(profile);
         } catch (err) {
             console.error(err.message);
@@ -266,6 +260,29 @@ router.put(
             return res.status(500).json({ msg: 'Server error' });
         }
   }
+);
+
+//@route    PUT api/profile/leave/:emp_id/:leave_id
+//@desc     Mark the leave request as approved or rejected
+//@access   Private
+
+router.put('/leave/:emp_id/:leave_id/',auth,
+    async (req, res) => {
+        try {
+            const foundProfile = await Employee.findOneAndUpdate(
+                    { 
+                        user : req.params.user_id,
+                        leaves : { $elemMatch: { _id : req.params.leave_id } }
+                    },
+                    { $set : { "leaves.$.status" : leaves.$.status^1 } },
+                    { new : true }
+            );
+            return res.json(foundProfile);
+        } catch (err) {
+            console.log(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
 );
 
 module.exports = router;

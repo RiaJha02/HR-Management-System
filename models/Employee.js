@@ -1,17 +1,9 @@
 const mongoose = require('mongoose');
 
 const EmployeeSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        requiredL: true,
-        unique: true
-    },
-    avatar: {
-        type :String
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'user'
     },
     contact : {
         type : String,
@@ -35,17 +27,25 @@ const EmployeeSchema = new mongoose.Schema({
     },
     leaves : [
         {
-            time : {
+            from : {
                 type : Date,
-                default : Date.now
+                required : true
+            },
+            to :{
+                type : Date,
+                required : true
             },
             reason : {
                 type : String,
                 required : true
             },
             status : {
-                type : Boolean,
-                default : false
+                type : Number,
+                default : 0
+            },
+            time : {
+                type : Date,
+                default : Date.now
             }
         }
     ],
@@ -62,9 +62,17 @@ const EmployeeSchema = new mongoose.Schema({
             mark : {
                 type : Boolean,
                 default : false
+            },
+            time : {
+                type : Date,
+                default : Date.now
             }
         }
-    ]
+    ],
+    date : {
+        type : Date,
+        default : Date.now
+    }
 });
 
 module.exports = Employee = mongoose.model('employee', EmployeeSchema);
