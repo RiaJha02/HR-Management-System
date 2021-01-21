@@ -15,7 +15,11 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     avatar: {
-        type :String
+        type : String
+    },
+    status: {
+        type : String,
+        default : 'Employee'
     },
     date: {
         type: Date,

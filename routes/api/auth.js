@@ -58,6 +58,7 @@ router.post(
                     .status(400)
                     .json({ errors: [{ msg: 'Invalid Credentials' }] });
           }
+          const desg = user.status;
 
           // Return jsonwebtoken
           const payload = {
@@ -71,7 +72,7 @@ router.post(
               { expiresIn: 360000 }, // before deployment change it
               (err, token) => {
                   if(err) throw err;
-                  res.json({ token })
+                  res.json([ token, desg ])
               }
           );
   
