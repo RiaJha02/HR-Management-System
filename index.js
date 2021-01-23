@@ -7,7 +7,7 @@ const app = express();
 ConnectDB();
 
 //Init Middleware
-app.use(express.json({ extended : false }));
+app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('API Running'));
 
@@ -19,4 +19,4 @@ app.use('/api/employee', require('./routes/api/employee'));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT , () => console.log(`Server started running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server started running on port ${PORT}`));
