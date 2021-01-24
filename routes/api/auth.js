@@ -73,10 +73,7 @@ router.post(
 				{ expiresIn: 360000 }, // before deployment change it
 				(err, token) => {
 					if (err) throw err;
-					res.json([
-						token,
-						user.roleID
-					]);
+					res.json({token});
 				}
 			);
 		} catch (err) {

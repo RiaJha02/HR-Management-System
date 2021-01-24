@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import {
-	Container,
-	Form,
-	Button,
-	Card,
-	Row,
-	Col,
-} from 'react-bootstrap';
-import '../Auth/auth.css';
+import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
+import PropTypes from 'prop-types';
+import './auth.css';
 
-const Register = () => {
+const Register = ({ setAlert, register }) => {
 	const [
 		formData,
 		setformData
@@ -17,23 +14,22 @@ const Register = () => {
 		name     : '',
 		email    : '',
 		password : '',
-		role     : ''
+		roleID   : ''
 	});
 
-	const { name, email, password, role } = formData;
+	const { name, email, password, roleID } = formData;
 
 	const onChange = (e) =>
 		setformData({ ...formData, [e.target.name]: e.target.value });
 
-	const onSubmit = (e) => {
+	const onSubmit = async (e) => {
 		e.preventDefault();
-		if(role !== 'HR-ID')
-		{
-			console.log('Give the HR Role ID');
-		}else{
-			console.log(formData);
+		if (roleID !== 'HR-ID') {
+			setAlert('Please provide ID for HR Role', 'danger');
+		} else {
+			register({ name, email, password, roleID });
 		}
-	}
+	};
 
 	return (
 		<Container fluid='md'>
@@ -47,9 +43,7 @@ const Register = () => {
 							backgroundColor : 'lightgrey',
 							border          : '1px grey'
 						}}>
-						<p>
-							Welcome, please provide the details!
-						</p>
+						<p>Welcome, please provide the details!</p>
 						<Form className='form' onSubmit={(e) => onSubmit(e)}>
 							<Form.Group>
 								<Form.Label>Full Name</Form.Label>
@@ -88,6 +82,7 @@ const Register = () => {
 											name='password'
 											value={password}
 											onChange={(e) => onChange(e)}
+											minLength='6'
 											required
 										/>
 									</Form.Group>
@@ -99,13 +94,17 @@ const Register = () => {
 									size='sm'
 									type='text'
 									placeholder='Enter ID provided'
-									name='role'
-									value={role}
+									name='roleID'
+									value={roleID}
 									onChange={(e) => onChange(e)}
 									required
 								/>
 							</Form.Group>
-							<Button size='sm' variant='warning' type='submit'>
+							<Button
+								size='sm'
+								variant='warning'
+								type='submit'
+								value='register'>
 								Register
 							</Button>
 						</Form>
@@ -117,4 +116,9 @@ const Register = () => {
 	);
 };
 
-export default Register;
+Register.propTypes = {
+	setAlert : PropTypes.func.isRequired,
+	register : PropTypes.func.isRequired
+};
+
+export default connect(null, { setAlert, register })(Register);

@@ -34,7 +34,7 @@ router.post(
 			name     : req.body.name,
 			email    : req.body.email,
 			password : req.body.email + '1234', //keeping a default password
-			roleID   : req.body.name + '-Employee'
+			roleID   : 'EMP-ID' ///default id
 		};
 		const emp = await fetch('http://localhost:5000/api/user', {
 			method  : 'POST',
