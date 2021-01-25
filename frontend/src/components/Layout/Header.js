@@ -7,8 +7,12 @@ import { logout } from '../../actions/auth';
 const Header = ({ auth: { isAuthenticated, loading, user }, logout }) => {
 	const authLinks1 = (
 		<Nav className='ml-auto'>
-			<Nav.Link href='/hr'>Profile</Nav.Link>
-			<Nav.Link href='/employees'>Employees</Nav.Link>
+			<Nav.Link href='/hr'>
+				<span className='hide-sm'>Profile</span>
+			</Nav.Link>
+			<Nav.Link href='/employees'>
+				<span className='hide-sm'>Employees</span>
+			</Nav.Link>
 			<Nav.Link onClick={logout} href='/hr'>
 				<span className='hide-sm'>Logout</span>
 			</Nav.Link>
@@ -16,10 +20,18 @@ const Header = ({ auth: { isAuthenticated, loading, user }, logout }) => {
 	);
 	const authLinks2 = (
 		<Nav className='ml-auto'>
-			<Nav.Link href='/emp'>Profile</Nav.Link>
-			<Nav.Link href='/leave'>Leaves</Nav.Link>
-			<Nav.Link href='/pay'>Payroll</Nav.Link>
-			<Nav.Link href='/docs'>Docs</Nav.Link>
+			<Nav.Link href='/emp'>
+				<span className='hide-sm'>Profile</span>
+			</Nav.Link>
+			<Nav.Link href='/leave'>
+				<span className='hide-sm'>Leaves</span>
+			</Nav.Link>
+			<Nav.Link href='/pay'>
+				<span className='hide-sm'>Payroll</span>
+			</Nav.Link>
+			<Nav.Link href='/docs'>
+				<span className='hide-sm'>Docs</span>
+			</Nav.Link>
 			<Nav.Link onClick={logout} href='/hr'>
 				<span className='hide-sm'>Logout</span>
 			</Nav.Link>

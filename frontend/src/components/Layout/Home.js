@@ -1,7 +1,17 @@
 import React from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const Home = () => {
+const Home = ({ isAuthenticated, user }) => {
+	if (isAuthenticated) {
+		if (user.roleID === 'HR-ID') {
+			return <Redirect to='/hr' />;
+		} else {
+			return <Redirect to='/emp' />;
+		}
+	}
 	return (
 		<Container>
 			<Row>
@@ -47,4 +57,14 @@ const Home = () => {
 	);
 };
 
-export default Home;
+Home.propTypes = {
+	isAuthenticated : PropTypes.bool,
+	user            : PropTypes.object
+};
+
+const mapStateToProps = (state) => ({
+	isAuthenticated : state.auth.isAuthenticated,
+	user            : state.auth.user
+});
+
+export default connect(mapStateToProps)(Home);

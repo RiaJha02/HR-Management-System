@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Container, Button } from 'react-bootstrap';
-import {Redirect} from 'react-router-dom';
+import { Form, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Experience = () => {
@@ -35,7 +35,6 @@ const Experience = () => {
 			const body = JSON.stringify(newEdu);
 			const res = await axios.post('http://localhost:5000/api/profile/experience', body, config);
             console.log(res.data);
-            <Redirect to='/hr'/>
 		} catch (err) {
 			console.log(err.response.data);
 		}
@@ -117,9 +116,7 @@ const Experience = () => {
 						required
 					/>
 				</Form.Group>
-				<Button size='sm' variant='warning'>
-                   Add
-                </Button>
+				<Link to='/hr' size='sm' className='btn btn-warning my-1'>Add</Link>
 			</Form>
 		</Container>
 	);

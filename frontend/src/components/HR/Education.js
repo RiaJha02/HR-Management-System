@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Container, Button } from 'react-bootstrap';
-import {Redirect} from 'react-router-dom';
+import { Form, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Education = () => {
@@ -24,18 +24,26 @@ const Education = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		const newEdu = {
-			school, degree, fieldofstudy, from, to, description
+			school,
+			degree,
+			fieldofstudy,
+			from,
+			to,
+			description
 		};
 		try {
 			const config = {
 				headers : {
 					'Content-Type' : 'application/json'
 				}
-			}
+			};
 			const body = JSON.stringify(newEdu);
-			const res = await axios.post('http://localhost:5000/api/profile/education', body, config);
+			const res = await axios.post(
+				'http://localhost:5000/api/profile/education',
+				body,
+				config
+			);
 			console.log(res.data);
-			<Redirect to='/hr'/>
 		} catch (err) {
 			console.log(err.response.data);
 		}
@@ -117,7 +125,9 @@ const Education = () => {
 						required
 					/>
 				</Form.Group>
-				<Button size='sm' variant='warning'>Add</Button>
+				<Link to='/hr' size='sm' className='btn btn-warning my-1'>
+					Add
+				</Link>
 			</Form>
 		</Container>
 	);

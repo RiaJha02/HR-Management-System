@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {
-	Button,
 	Col,
 	Container,
 	Row,
 	Card,
 	Table,
-	ListGroup
+	ListGroup,
+	Image,
+	Spinner
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -15,39 +16,84 @@ import { getCurrentProfile } from '../../actions/profile';
 
 import './hr.css';
 
-const Dashboard = ({ getCurrentProfile, auth, profile }) => {
-	useEffect(() => {
-		getCurrentProfile();
-	}, []);
-	return (
-		<Container>
+const Dashboard = ({
+	getCurrentProfile,
+	auth              : { user },
+	profile           : { profile, loading }
+}) => {
+	useEffect(
+		() => {
+			getCurrentProfile();
+		},
+		[
+			getCurrentProfile
+		]
+	);
+	return loading && profile == null ? (
+	<Fragment>
+		<Spinner type="grow" color="primary" />
+	</Fragment>) : ( <Fragment>
+		{ profile == null ? (
+		<Fragment>
+				<p>You have not set up the profile yet!!</p>
+				<Link to='/createProfile' size='sm' className='btn btn-info my-1'>
+					Create Profile
+				</Link>
+		</Fragment> ) : ( <Container>
 			<Row>
-				<Card.Title style={{ margin: '12px 12px 2px 12px' }}>
-					HR Personal Details
-				</Card.Title>
 			</Row>
 			<Row>
 				<Col>
 					<Card style={{ marginTop: '1em' }}>
+						<Card.Title style={{margin:'15px 15px 0px 15px'}}>Personal Details</Card.Title>
 						<Card.Body>
 							<ListGroup>
-								Name
+								Name : {user && user.name}
 								<br />
-								Email
+								Email : {user && user.email}
 								<br />
-								Contact
+								Company : {profile && profile.company}
+								<br />
+								Location : {profile && profile.location}
+								<br />
+								Designation : {profile && profile.designation}
+								<br />
+								Skills
+								<br />
+								Bio : {profile && profile.bio}
+								<br />
+							</ListGroup>
+						</Card.Body>
+					</Card>
+					<Card>
+					<Card.Title style={{margin:'15px 15px 0px 15px'}}>Social Media Handles</Card.Title>
+						<Card.Body>
+						<ListGroup>
+								Twitter : {profile && profile.social.twitter}
+								<br />
+								LinkedIn : {profile && profile.social.linkedin}
+								<br />
+								Facebook : {profile && profile.social.facebook}
+								<br />
+								Instagram : {profile && profile.social.instagram}
 							</ListGroup>
 						</Card.Body>
 					</Card>
 				</Col>
 				<Col>
-					<Card>{/* <Card.Img>IMAGE</Card.Img> */}</Card>
+				<Card style={{ marginTop: '3em'}}>
+				<Image
+					src={user && user.avatar}
+					style={{margin:'0.1em 0.1em 0.1em 0.1em' }}
+					fluid   
+				/>
+				</Card>
 				</Col>
 			</Row>
 			<Row>
 				<Col style={{ margin: '10px 10px 10px 10px' }}>
 					<h4>Education</h4>
-					<Table striped bordered hover size='sm'>
+					<Table responsive striped bordered hover size='sm'>
 						<thead>
 							<tr>
 								<th>#</th>
@@ -61,15 +107,13 @@ const Dashboard = ({ getCurrentProfile, auth, profile }) => {
 							<tr />
 						</tbody>
 					</Table>
-					<Button size='sm' variant='info'>
-						<Link to='/education'>Add Education</Link>
-					</Button>
+					<Link to='/education' size='sm' className='btn btn-info my-1'>Add Education</Link>
 				</Col>
 			</Row>
 			<Row>
 				<Col style={{ margin: '10px 10px 10px 10px' }}>
 					<h4>Experience</h4>
-					<Table striped bordered hover size='sm'>
+					<Table responsive striped bordered hover size='sm'>
 						<thead>
 							<tr>
 								<th>#</th>
@@ -83,13 +127,12 @@ const Dashboard = ({ getCurrentProfile, auth, profile }) => {
 							<tr />
 						</tbody>
 					</Table>
-					<i className='fab fa-black-tie text-primary' />
-					<Button size='sm' variant='info'>
-						<Link to='/experience'>Add Experience</Link>
-					</Button>
+					<Link to='/education' size='sm' className='btn btn-info my-1'>Add Experience</Link>
 				</Col>
 			</Row>
-		</Container>
+	</Container>
+	)}
+	</Fragment>
 	);
 };
 

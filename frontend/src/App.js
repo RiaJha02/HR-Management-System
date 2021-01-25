@@ -18,6 +18,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import Leave from './components/Employee/Leave';
 import Pay from './components/Employee/Pay';
 import Docs from './components/Employee/Docs';
+import CreateProfile from './components/HR/CreateProfile';
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
@@ -38,6 +39,7 @@ const App = () => {
 						<Route exact path='/register' component={Register} />
 						<Route exact path='/login' component={Login} />
 						<PrivateRoute exact path='/hr' component={HRDashboard} />
+						<PrivateRoute exact path='/createProfile' component={CreateProfile} />
 						<PrivateRoute exact path='/education' component={Education} />
 						<PrivateRoute exact path='/experience' component={Experience} />
 						<PrivateRoute exact path='/employees' component={Employees} />
