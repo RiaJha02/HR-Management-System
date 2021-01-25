@@ -6,12 +6,13 @@ import {
 	USER_LOADED,
 	AUTH_ERROR,
 	LOGIN_SUCCESS,
-	LOGIN_FAIL
+	LOGIN_FAIL,
+	LOGOUT
 } from '../actions/types';
 import setAuthToken from '../utils/setAuthToken';
 
 //Load user
-export const loadUser = () => async dispatch => {
+export const loadUser = () => async (dispatch) => {
 	if (localStorage.token) {
 		setAuthToken(localStorage.token);
 	}
@@ -29,7 +30,9 @@ export const loadUser = () => async dispatch => {
 };
 
 //Register
-export const register = ({ name, email, password, roleID }) => async dispatch => {
+export const register = ({ name, email, password, roleID }) => async (
+	dispatch
+) => {
 	const config = {
 		headers : {
 			'Content-Type' : 'application/json'
@@ -59,7 +62,7 @@ export const register = ({ name, email, password, roleID }) => async dispatch =>
 };
 
 //Login
-export const login = ({ email, password }) => async dispatch => {
+export const login = ({ email, password }) => async (dispatch) => {
 	const config = {
 		headers : {
 			'Content-Type' : 'application/json'
@@ -86,4 +89,9 @@ export const login = ({ email, password }) => async dispatch => {
 			type : LOGIN_FAIL
 		});
 	}
+};
+
+//Logout
+export const logout = () => async (dispatch) => {
+	dispatch({ type: LOGOUT });
 };

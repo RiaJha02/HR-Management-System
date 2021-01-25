@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 import { Redirect } from 'react-router-dom';
 
-const Login = ({ login, isAuthenticated, userID }) => {
+const Login = ({ login, isAuthenticated, user }) => {
+	
 	const [
 		formData,
 		setformData
@@ -24,13 +25,24 @@ const Login = ({ login, isAuthenticated, userID }) => {
 		e.preventDefault();
 		login({ email, password });
 	};
-
-	//Redirect if logged in
-	if (isAuthenticated) {
-		if(userID === 'HR-ID')
-			return <Redirect to='/hr' />; //If HR is logged in
-		else
-			return <Redirect to='/emp' />; //If Employee is logged in
+	console.log('Changing state');
+	//Redirect to dashboards
+	try {
+		if(isAuthenticated)
+		{
+			if(user === 'null'){
+				window.location.reload(true);
+			}
+			else{
+				if(user.roleID === 'HR-ID'){
+					return <Redirect to='/hr' />;
+				}else{
+					return <Redirect to='/emp' />;
+				}
+			}
+		}	
+	} catch (error) {
+		window.location.reload(true);
 	}
 
 	return (
@@ -91,12 +103,12 @@ const Login = ({ login, isAuthenticated, userID }) => {
 Login.propTypes = {
 	login           : PropTypes.func.isRequired,
 	isAuthenticated : PropTypes.bool,
-	userID            : PropTypes.element
+	user            : PropTypes.object
 };
 
 const mapStateToprops = (state) => ({
 	isAuthenticated : state.auth.isAuthenticated,
-	user            : state.auth.user
+	user           : state.auth.user
 });
 
 export default connect(mapStateToprops, { login })(Login);

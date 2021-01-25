@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import './auth.css';
 
-const Register = ({ setAlert, register }) => {
+const Register = ({ setAlert, register, isAuthenticated, user }) => {
 	const [
 		formData,
 		setformData
@@ -30,6 +31,26 @@ const Register = ({ setAlert, register }) => {
 			register({ name, email, password, roleID });
 		}
 	};
+
+	console.log('Changing state');
+	//Redirect to dashboards
+	try {
+		if(isAuthenticated)
+		{
+			if(user === 'null'){
+				window.location.reload(true);
+			}
+			else{
+				if(user.roleID === 'HR-ID'){
+					return <Redirect to='/hr' />;
+				}else{
+					return <Redirect to='/emp' />;
+				}
+			}
+		}	
+	} catch (error) {
+		window.location.reload(true);
+	}
 
 	return (
 		<Container fluid='md'>
@@ -117,8 +138,15 @@ const Register = ({ setAlert, register }) => {
 };
 
 Register.propTypes = {
-	setAlert : PropTypes.func.isRequired,
-	register : PropTypes.func.isRequired
+	setAlert        : PropTypes.func.isRequired,
+	register        : PropTypes.func.isRequired,
+	isAuthenticated : PropTypes.bool,
+	user         : PropTypes.element
 };
 
-export default connect(null, { setAlert, register })(Register);
+const mapStateToprops = (state) => ({
+	isAuthenticated : state.auth.isAuthenticated,
+	user         : state.auth.user
+});
+
+export default connect(mapStateToprops, { setAlert, register })(Register);

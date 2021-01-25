@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Page404 = () => {
+const Pay = () => {
     return (
         <div>
-
+          Pay Slips  
         </div>
     )
-};
+}
 
-export default Page404;
+export default Pay
