@@ -19,6 +19,7 @@ import Leave from './components/Employee/Leave';
 import Pay from './components/Employee/Pay';
 import Docs from './components/Employee/Docs';
 import CreateProfile from './components/HR/CreateProfile';
+import CreateEmpProfile from './components/HR/CreateEmpProfile';
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
@@ -43,6 +44,7 @@ const App = () => {
 						<PrivateRoute exact path='/education' component={Education} />
 						<PrivateRoute exact path='/experience' component={Experience} />
 						<PrivateRoute exact path='/employees' component={Employees} />
+						<PrivateRoute exact path='/createEmpProfile' component={CreateEmpProfile} />
 						<PrivateRoute exact path='/emp' component={EMPDashboard} />
 						<PrivateRoute exact path='/leave' component={Leave} />
 						<PrivateRoute exact path='/pay' component={Pay} />
