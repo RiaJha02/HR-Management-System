@@ -2,6 +2,8 @@
 
 This app will help HR to securely login to the system and will remain login to access the employee data until logout by themselves. The token generated for login has been stored in the redux store and is used whenever necessary. The user once login/registered cannot see the login and register button until logout button has clicked. This app will also help employees to access their personal details once added by the HR and also they can make leave request.
 
+Technologies Used: reacjs, expressjs, nodejs, mongodb, mongoose, redux, redux-thunk, react-bootstrap, jwt and bcrypt
+
 Features Included:
 Implemented the Signup and Login/Logout functionality with a user-auth schema in the database.
 Implemented a feature to add employees and their details by HR/Admin.
