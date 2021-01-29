@@ -12,7 +12,7 @@ For running this application:-
 
 Step1: Download zip
 
-Step2: Open atlas: Login to the account Create a cluster named: HR-Management System Ensure network access Now connect the application using mongoose link and put it in the config/default.json under mongoURI to establish connection
+Step2: Open atlas and Login to the account and create a cluster named: HR-Management System. Ensure network access via IP whitelisting before connecting and now connect the application using mongoose link and put it in the config/default.json under mongoURI to establish connection
 
 Step3: In HRMS-app folder: run the following commands sequentially:- npm install npm run server
 
