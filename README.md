@@ -21,5 +21,3 @@ Step3: In HRMS-app folder: run the following commands sequentially:- npm install
 Output now: Server running on port 5000 and MongoDB connected.....
 
 Step 4: in the frontend folder run, npm install and then npm start or go back to HRMS-app and run npm run client
-
-I'm still working on UI but the backend APIs are completed and working fine with the database.
